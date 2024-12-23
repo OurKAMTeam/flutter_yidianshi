@@ -1,6 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:flutter_base/shared/shared.dart';
+import 'package:flutter_yidianshi/shared/shared.dart';
 
 class ThemeConfig {
   static ThemeData createTheme({

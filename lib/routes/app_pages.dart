@@ -1,4 +1,4 @@
-import 'package:flutter_base/pages/pages.dart';
+import 'package:flutter_yidianshi/pages/pages.dart';
 import 'package:get/get.dart';
 
 part 'app_routes.dart';

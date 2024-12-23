@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'package:flutter_base/shared/shared.dart';
+import 'package:flutter_yidianshi/shared/shared.dart';
 import 'package:get/get.dart';
 //import 'xd_api/login/base_provider.dart' as repo_general;
 import 'package:path_provider/path_provider.dart';

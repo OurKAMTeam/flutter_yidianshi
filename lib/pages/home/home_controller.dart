@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_base/models/models.dart';
-import 'package:flutter_base/routes/app_pages.dart';
-import 'package:flutter_base/shared/shared.dart';
-import 'package:flutter_base/api/api.dart';
+import 'package:flutter_yidianshi/models/models.dart';
+import 'package:flutter_yidianshi/routes/app_pages.dart';
+import 'package:flutter_yidianshi/shared/shared.dart';
 
 
 class HomeController extends GetxController {

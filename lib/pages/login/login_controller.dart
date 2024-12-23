@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:flutter_base/models/models.dart';
-import 'package:flutter_base/routes/app_pages.dart';
-import 'package:flutter_base/shared/shared.dart';
-import 'package:flutter_base/api/api.dart';
+import 'package:flutter_yidianshi/models/models.dart';
+import 'package:flutter_yidianshi/routes/app_pages.dart';
+import 'package:flutter_yidianshi/shared/shared.dart';
+import 'package:flutter_yidianshi/xd_api/xd_api.dart';
 
 
 class LoginController extends GetxController {
-  final ApiRepository apiRepository;
-  LoginController({required this.apiRepository});
+  final XdApiRepository xdapiRepository;
+  LoginController({required this.xdapiRepository});
 
   final GlobalKey<FormState> loginFormKey = GlobalKey<FormState>();
   final loginEmailController = TextEditingController();
@@ -27,19 +27,19 @@ class LoginController extends GetxController {
 
 
   void login(BuildContext context) async {
-    // final res = await apiRepository.login(
-    //   LoginRequest(
-    //     email: loginEmailController.text,
-    //     password: loginPasswordController.text,
-    //   ),
-    // );
-    //
-    // final prefs = Get.find<SharedPreferences>();
-    // if (res!.token.isNotEmpty) {
-    //   prefs.setString(StorageConstants.cookie, res.token);
-    //   Get.toNamed(Routes.HOME);
-    // }
-    Get.toNamed(Routes.HOME);
+    await xdapiRepository.login(
+      data: XdLoginRequest(
+        number: loginEmailController.text,
+        passwd: loginPasswordController.text,
+        isYanJiu: true,
+      ),
+    );
+
+    final prefs = Get.find<SharedPreferences>();
+    prefs.setString(StorageConstants.number, loginEmailController.text);
+    prefs.setString(StorageConstants.passwd, loginPasswordController.text);
+
+
   }
 
   @override

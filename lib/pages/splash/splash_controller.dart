@@ -1,5 +1,5 @@
-import 'package:flutter_base/routes/routes.dart';
-import 'package:flutter_base/shared/shared.dart';
+import 'package:flutter_yidianshi/routes/routes.dart';
+import 'package:flutter_yidianshi/shared/shared.dart';
 import 'package:get/get.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 

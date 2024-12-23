@@ -1,18 +1,19 @@
 import 'dart:convert';
 
-class LoginResponse {
-  LoginResponse({
+class xdLoginResponse{
+  xdLoginResponse({
     required this.token,
   });
 
   String token;
 
-  factory LoginResponse.fromRawJson(String str) =>
-      LoginResponse.fromJson(json.decode(str));
+
+  factory xdLoginResponse.fromRawJson(String str) =>
+      xdLoginResponse.fromJson(json.decode(str));
 
   String toRawJson() => json.encode(toJson());
 
-  factory LoginResponse.fromJson(Map<String, dynamic> json) => LoginResponse(
+  factory xdLoginResponse.fromJson(Map<String, dynamic> json) => xdLoginResponse(
     token: json["token"],
   );
 
