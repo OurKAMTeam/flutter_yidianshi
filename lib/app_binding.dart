@@ -7,6 +7,13 @@ class AppBinding extends Bindings {
   void dependencies()   async {
     Get.put(ApiProvider(), permanent: true);
     Get.put(ApiProviderEhall(), permanent: true);
-    Get.put(XdApiRepository(apiProvider: Get.find<ApiProvider>(), apiProviderEhall: Get.find<ApiProviderEhall>()), permanent: true);
+    Get.put(ApiProviderPersonalyjs(), permanent: true);
+    Get.put(ApiProviderPersonalxgxt(), permanent: true);
+
+    Get.put(XdApiRepository(apiProvider: Get.find<ApiProvider>(),
+        apiProviderEhall: Get.find<ApiProviderEhall>(),
+        apiProviderPersonalyjs: Get.find<ApiProviderPersonalyjs>(),
+        apiProviderPersonalxgxt: Get.find<ApiProviderPersonalxgxt>(),
+    ), permanent: true);
   }
 }

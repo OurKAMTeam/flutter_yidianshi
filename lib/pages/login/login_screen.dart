@@ -83,35 +83,35 @@ class LoginScreen extends GetView<LoginController>{
             ),
 
             const SizedBox(height: 12.0),
-            // Row(
-            //   mainAxisAlignment: MainAxisAlignment.center,
-            //   children: <Widget>[
-            //     Text("本科生"),
-            //     Radio(
-            //         value: "undergraduate",
-            //         groupValue: this._selectedOption,
-            //         activeColor: Colors.blue,
-            //         onChanged: (value){
-            //           setState(() {
-            //             this._selectedOption = value!;
-            //           });
-            //         }
-            //     ),
-            //     SizedBox(width: 20),
-            //     Text("研究生"),
-            //     Radio(
-            //         value: "graduate",
-            //         groupValue: this._selectedOption,
-            //         activeColor: Colors.blue,
-            //         onChanged: (value){
-            //           setState(() {
-            //             this._selectedOption = value!;
-            //           });
-            //         }
-            //     ),
-            //   ],
-            //
-            // ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: <Widget>[
+                Text("本科生"),
+                Obx(() => Radio<String>(
+                  value: "undergraduate",
+                  groupValue: controller.selectedOption.value,
+                  activeColor: Colors.blue,
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.updateOption(value);
+                    }
+                  },
+                )),
+                SizedBox(width: 20),
+                Text("研究生"),
+                Obx(() => Radio<String>(
+                  value: "graduate",
+                  groupValue: controller.selectedOption.value,
+                  activeColor: Colors.blue,
+                  onChanged: (value) {
+                    if (value != null) {
+                      controller.updateOption(value);
+                    }
+                  },
+                )),
+              ],
+
+            ),
             const SizedBox(height: 24.0),
             // 添加登录按钮
             ElevatedButton(

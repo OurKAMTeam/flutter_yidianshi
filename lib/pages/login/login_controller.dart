@@ -15,6 +15,13 @@ class LoginController extends GetxController {
   final loginEmailController = TextEditingController();
   final loginPasswordController = TextEditingController();
 
+  var selectedOption = 'undergraduate'.obs;
+
+  void updateOption(String value) {
+    selectedOption.value = value;
+    log.info("here:$selectedOption");
+  }
+
   @override
   void onInit() {
     super.onInit();
@@ -27,6 +34,7 @@ class LoginController extends GetxController {
 
 
   void login(BuildContext context) async {
+    // 登录接口，网络IO部分写在xdapiRepository.login里面
     await xdapiRepository.login(
       data: XdLoginRequest(
         number: loginEmailController.text,
@@ -35,9 +43,19 @@ class LoginController extends GetxController {
       ),
     );
 
+    // 如果上面没有报错则证明是正常登录的，
     final prefs = Get.find<SharedPreferences>();
     prefs.setString(StorageConstants.number, loginEmailController.text);
     prefs.setString(StorageConstants.passwd, loginPasswordController.text);
+
+
+    if(selectedOption.value == "undergraduate"){
+      // 本科生基本信息
+      await xdapiRepository.xdxtPersonal();
+    }else{
+      // 研究生基本信息
+      await xdapiRepository.yjsPersonal();
+    }
 
 
   }

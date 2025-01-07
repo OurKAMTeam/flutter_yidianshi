@@ -1,7 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'jc_captcha.dart';
+import '../login/jc_captcha.dart';
 import 'dart:typed_data';
 import '../api_constants.dart';
 

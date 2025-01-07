@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter_yidianshi/xd_api/login/base_provider.dart';
+import 'package:flutter_yidianshi/xd_api/base_provider.dart';
 import 'package:image/image.dart' as img;
 import 'dart:typed_data';
 import 'dart:io';

@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 
-import 'base_provider.dart';
+import '../base_provider.dart';
 
 import 'dart:convert';
 import 'dart:io';

@@ -36,6 +36,7 @@ dependencies:
   html: ^0.15.5
   cookie_jar: ^4.0.8
   image: ^4.5.2
+  jiffy: ^6.3.2
 
 dev_dependencies:
   flutter_test:
