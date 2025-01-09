@@ -55,11 +55,48 @@ class ApiProviderPersonalyjs extends LoginProvider{
 
   }
 
-
-
-
-
 }
 
+/// 研究生课表相关的 API
+class YjsptClassTableApiProvider extends LoginProvider {
+  @override
+  void onInit() {
+    super.onInit();
+    httpClient.baseUrl = ApiConstants.yjslUrl;
+  }
 
+  // 获取学期代码
+  Future<String> getSemesterCode() {
+    return post(
+      "/gsapp/sys/wdkbapp/modules/xskcb/kfdxnxqcx.do",
+      {},
+    ).then((value) => value.body["datas"]["kfdxnxqcx"]["rows"][0]["WID"]);
+  }
 
+  // 获取课表信息
+  Future<Response> getClassTableInfo(String semesterCode) {
+    return post(
+      "/gsapp/sys/wdkbapp/modules/xskcb/xspkjgcx.do",
+      {"XNXQDM": semesterCode},
+    );
+  }
+
+  // 获取未安排课程信息
+  Future<Response> getNotArrangedInfo(String semesterCode, String studentId) {
+    return post(
+      "/gsapp/sys/wdkbapp/modules/xskcb/xswsckbkc.do",
+      {
+        'XNXQDM': semesterCode,
+        'XH': studentId,
+      },
+    );
+  }
+
+  // 获取当前周数
+  Future<Response> getCurrentWeek(String date) {
+    return post(
+      '/gsapp/sys/yjsemaphome/portal/queryRcap.do',
+      {'day': date},
+    );
+  }
+}

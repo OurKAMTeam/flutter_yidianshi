@@ -8,4 +8,6 @@ class ApiConstants {
 
   static const xgxtUrl = 'https://xgxt.xidian.edu.cn';
 
+  // 电费系统
+  static const electricityUrl = 'https://payment.xidian.edu.cn';
 }

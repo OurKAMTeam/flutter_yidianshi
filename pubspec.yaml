@@ -37,6 +37,16 @@ dependencies:
   cookie_jar: ^4.0.8
   image: ^4.5.2
   jiffy: ^6.3.2
+  ming_cute_icons: ^0.0.7
+  extended_nested_scroll_view: ^6.2.1
+  json_annotation: ^4.9.0
+  timeline_tile: ^2.0.0
+  foundation: ^0.0.5
+  home_widget: ^0.7.0
+  tflite_flutter: ^0.10.4
+  http: ^1.2.0
+  encrypt: ^5.0.3
+  synchronized: ^3.3.0+3
 
 dev_dependencies:
   flutter_test:
@@ -51,4 +61,5 @@ flutter:
 
   assets:
     - assets/login/
-
+    - assets/models/
+    - assets/i18n/

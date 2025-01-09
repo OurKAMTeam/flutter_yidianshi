@@ -30,12 +30,7 @@ class App extends StatelessWidget {
       initialRoute: Routes.SPLASH,
       defaultTransition: Transition.fade,
       getPages: AppPages.routes,
-      smartManagement: SmartManagement.keepFactory,
-      title: 'Flutter GetX Boilerplate',
       theme: ThemeConfig.lightTheme,
-      // locale: TranslationService.locale,
-      // fallbackLocale: TranslationService.fallbackLocale,
-      // translations: TranslationService(),
       builder: EasyLoading.init(),
     );
   }

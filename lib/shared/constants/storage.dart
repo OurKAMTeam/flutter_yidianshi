@@ -13,8 +13,7 @@ class StorageConstants {
   static final String dorm = 'dorm'; // 宿舍，如为纯数字即为电费账号
   static final String currentSemester = 'currentSemester'; // 当前学期编码
   static final String currentStartDay = 'currentStartDay'; // 当前学期编码
-
-
-
+  static final String swift = 'swift'; // 课表偏移周数
+  static final String appId = 'appId'; // iOS App ID
 
 }

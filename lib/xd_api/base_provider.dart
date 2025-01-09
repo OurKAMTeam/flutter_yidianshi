@@ -1,23 +1,22 @@
-import 'dart:async';
-import 'dart:io';
+// Copyright 2024 BenderBlog Rodriguez and contributors.
+// SPDX-License-Identifier: MPL-2.0
 
+import 'dart:io';
 import 'package:flutter_yidianshi/shared/shared.dart';
 import 'package:get/get.dart';
+import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:cookie_jar/cookie_jar.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:get/get_connect/http/src/request/request.dart';
 import 'package:flutter_easyloading/flutter_easyloading.dart';
-import 'dart:convert';
-
-
 
 late Directory supportPath;
 
 final _setCookieReg = RegExp('(?<=)(,)(?=[^;]+?=)');
 
 // 拦截器定义，因为涉及到cookie的处理，函数之间的传递过于麻烦，因此删去拦截器文件，把所有逻辑放在这里
-class LoginProvider extends GetConnect {
+class LoginProvider extends BaseProvider {
   final prefs = Get.find<SharedPreferences>();
+  final _storageService = Get.find<StorageService>();
   late final PersistCookieJar cookieJar;
 
   @override
@@ -47,8 +46,6 @@ class LoginProvider extends GetConnect {
       "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
           "AppleWebKit/537.36 (KHTML, like Gecko) "
           "Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0";
-
-
       EasyLoading.show(status: 'loading...');
       requestLogger(request);
 
@@ -56,7 +53,7 @@ class LoginProvider extends GetConnect {
     });
 
     // 添加响应拦截器
-    httpClient.addResponseModifier((Request request, Response response) async {
+    httpClient.addResponseModifier((request, response) async {
       responseLogger(response);
       await _saveCookies(response);
       if(response.statusCode == 200){
@@ -76,7 +73,6 @@ class LoginProvider extends GetConnect {
       if (setCookies == [] || setCookies.isEmpty) {
         return;
       }
-
 
       // Process each cookie string into Cookie objects
       final List<Cookie> cookies = setCookies
@@ -115,12 +111,8 @@ class LoginProvider extends GetConnect {
     }
   }
 
-
-
   // 清空所有 Cookies
   Future<void> clearCookieJar() => cookieJar.deleteAll();
-
-
 
   void requestLogger(Request request) async{
     // 初始化日志字符串
@@ -174,7 +166,6 @@ class LoginProvider extends GetConnect {
     print(logMessage);
   }
 
-
   String getCookies(List<Cookie> cookies) {
     // 按路径长度降序排序 cookies
     cookies.sort((a, b) {
@@ -192,11 +183,96 @@ class LoginProvider extends GetConnect {
     // 返回拼接后的 cookies 字符串
     return cookies.map((cookie) => '${cookie.name}=${cookie.value}').join('; ');
   }
-
 }
 
+enum SessionState {
+  fetching,
+  fetched,
+  error,
+  none,
+}
 
+abstract class BaseProvider extends GetConnect {
+  GetHttpClient get httpClient => GetHttpClient();
+  final _storageService = Get.find<StorageService>();
+  final cookieJar = PersistCookieJar(
+    persistSession: true,
+    storage: FileStorage("${supportPath.path}/cookie/general"),
+  );
 
+  Future<void> clearCookieJar() => cookieJar.deleteAll();
 
+  @override
+  void onInit() {
+    super.onInit();
+    httpClient.timeout = const Duration(seconds: 30);
+    httpClient.defaultDecoder = (data) => data;
+    httpClient.addRequestModifier<dynamic>((request) {
+      request.headers['User-Agent'] = "Mozilla/5.0 (Windows NT 10.0; Win64; x64) "
+          "AppleWebKit/537.36 (KHTML, like Gecko) "
+          "Chrome/120.0.0.0 Safari/537.36 Edg/120.0.0.0";
+      return request;
+    });
+  }
 
+  Future<Response<T>> safeRequest<T>(
+    Future<Response<T>> Function() request, {
+    bool requiresAuth = true,
+  }) async {
+    try {
+      final response = await request();
+      if (response.status.isOk) {
+        return response;
+      } else {
+        throw 'Request failed with status: ${response.status.code}';
+      }
+    } catch (e) {
+      if (requiresAuth && e.toString().contains('401')) {
+        throw NotAuthenticatedException();
+      }
+      rethrow;
+    }
+  }
 
+  String? getCookie(String name) {
+    final cookies = _storageService.getString(StorageConstants.cookie);
+    if (cookies.isEmpty) return null;
+    
+    final cookieList = cookies.split(';').map((c) => c.trim()).toList();
+    for (var cookie in cookieList) {
+      if (cookie.startsWith('$name=')) {
+        return cookie.substring(name.length + 1);
+      }
+    }
+    return null;
+  }
+
+  Future<void> saveCookie(String cookies) async {
+    await _storageService.setString(StorageConstants.cookie, cookies);
+  }
+
+  static Future<bool> isInSchool() async {
+    try {
+      final response = await GetConnect(timeout: const Duration(seconds: 5))
+          .get("http://linux.xidian.edu.cn");
+      return response.status.isOk;
+    } catch (_) {
+      return false;
+    }
+  }
+}
+
+class NotAuthenticatedException implements Exception {
+  final String message;
+  NotAuthenticatedException([this.message = '未登录或登录已过期']);
+
+  @override
+  String toString() => message;
+}
+
+class NotSchoolNetworkException implements Exception {
+  final msg = "没有在校园网环境";
+
+  @override
+  String toString() => msg;
+}
